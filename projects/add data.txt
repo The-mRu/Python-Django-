@@ -1,0 +1,18 @@
+from book.models import Author, Publisher, Book
+
+author_1 = Author(name='Mamun', birthdate='2000-10-10')
+author_1.save()  # Save to the database
+
+author_2 = Author(name='Rafi', birthdate='2000-06-25')
+author_2.save()
+
+author_3 = Author(name='Rayhan', birthdate='2000-05-25')
+author_3.save()
+print( Author.objects.all() )
+
+publisher_1 = Publisher(name='FakaFaki Publication')
+publisher_1.save()
+
+publisher_2 = Publisher(name='The_mRu')
+publisher_2.save()
+print(Publisher.objects.all())

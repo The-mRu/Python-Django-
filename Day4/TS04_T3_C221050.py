@@ -22,4 +22,4 @@ calculator = FuelEfficiencyCalculator()
 miles_driven = 100
 gallons_used = 3.7
 efficiency = calculator.calculate(miles_driven, gallons_used)
-print(f"Fuel Efficiency: {efficiency:.2f} miles per gallon")
+print(f"Fuel Efficiency: {efficiency:.2f} miles per gallon") 

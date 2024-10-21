@@ -1,0 +1,39 @@
+author2 = Author(name="Rafi", birthdate="2000-09-20")
+author2.save()
+book2 = Book(title="Coder", publication_date="2022-08-06", author_id=2)
+book2.save()
+
+books = Book.objects.all()
+print(list(books))
+
+publisher = Publisher.objects.all()
+print(list(publisher))
+
+
+author = Author.objects.get(name="Mamun")  
+books_by_author = Book.objects.filter(author=author) 
+print(books_by_author)
+
+or 
+
+# Retrieve all books by a specific author in a single line
+books_by_author = Book.objects.filter(author__name="Mamun")  
+
+# Print the result
+print(books_by_author)
+
+
+
+from django.utils import timezone
+from datetime import timedelta
+
+# Calculate the date for five years ago
+five_years_ago = timezone.now().date() - timedelta(days=5*365)
+
+# Filter books published in the last 5 years
+recent_books = Book.objects.filter(publication_date__gte=five_years_ago)
+
+
+# Sort books by price in descending order
+sorted_books = Book.objects.all().order_by('-price')
+print(Book.objects.all().order_by('-price'))
