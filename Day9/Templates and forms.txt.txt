@@ -1,5 +1,0 @@
-today make some changes in book_list.html,
-success/contact_success.html and contact.html file created in the templates folder.
-created forms.py then coded for a signup forms.
-we import this form in views.py and created a class named ContactFormView .
-then include two path(contact/add , contact/contact_success) in urls.py so we import ContactFormView in there.
