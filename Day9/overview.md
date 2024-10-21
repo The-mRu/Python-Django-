@@ -1,6 +1,6 @@
-# Project Overview
+# Overview of Day9
 
-This project includes the following changes and implementations:
+This project includes the following changes :
 
 ## Updates to Templates
 
