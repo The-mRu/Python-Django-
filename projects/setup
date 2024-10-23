@@ -1,0 +1,91 @@
+python --version
+mkdir myproject
+cd myproject
+python -m venv env
+env\Scripts\activate
+pip install django
+django-admin startproject blog
+cd blog
+python manage.py runserver
+
+create app: python manage.py startapp  book
+
+create templates folder where html and others will be placed 
+create urls.py in the book
+
+
+this have to connect with main project, go to settings.py then
+INSTALLED_APPS = [
+    ....
+    'book',
+]
+and urls.py
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    ....
+    path('book/', include('book.urls')),
+]
+
+*then create function or class in the book/views.py and add path for this fuction/class
+ in book/urls.py
+if you runserver without added above 2 things then will show ValueError: Empty module name
+
+create class based models in models.py (Model_Name: Book,Author,Publisher)
+then:   python manage.py makemigrations
+	python manage.py migrate
+
+Using python manage.py shell, inserted data to the three models
+such as:
+
+from book.models import Author, Publisher, Book
+author_1 = Author(name='Mamun', birthdate='2000-10-10')
+author_1.save()  # Save to the database
+
+author_2 = Author(name='Rafi', birthdate='2000-06-25')
+author_2.save()
+
+author_3 = Author(name='Rayhan', birthdate='2000-05-25')
+author_3.save()
+print( Author.objects.all() )
+
+publisher_1 = Publisher(name='FakaFaki Publication')
+publisher_1.save()
+
+publisher_2 = Publisher(name='The_mRu')
+publisher_2.save()
+print(Publisher.objects.all())
+
+and Publisher model data added through Django_Admin_Panel
+
+python manage.py createsuperuser
+
+then in the blog/admin.py , register Model name so that it appears in the admin Panel
+
+from django.contrib import admin
+from .models import Author, Publisher, Book
+
+# Register the Author model
+admin.site.register(Author)
+
+# Register the Publisher model
+admin.site.register(Publisher)
+
+# Register the Book model
+admin.site.register(Book)
+
+
+
+
+
+if html format is not found in the templates then do following this....
+
+Ctrl+Shift+P
+Type Preferences: Open workspeace Settings (JSON) and select it.
+{
+    "files.associations": {
+    "*.html": "html"
+}
+}
+
