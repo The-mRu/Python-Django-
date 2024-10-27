@@ -1,3 +1,22 @@
+
+Mid-term Examination 
+Total Mark: 30
+Date: 01-11-2024
+
+Mark Distribution:
+Viva Interview: 20
+Problem Solving: 10
+Topics ->
+Viva: 
+1. Python
+2. Django
+3. OOP
+4. Design Pattern
+Problem Solving: 
+1. Python
+2. Django
+
+
 generator ,
 threading,
 sync, async,

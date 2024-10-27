@@ -6,6 +6,11 @@ from django.views.generic import ListView, FormView
 from book.models import Book
 from book.forms import ContactForm, BookForm
 
+#from rest framework
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from book.serializers import BookSerializer
+
 def home(request):
     return HttpResponse("Welcome to the Book page! (home function)")
 
@@ -42,3 +47,19 @@ class BookCreateView(FormView):
     def form_valid(self, form):
         form.save()  # Task 3: Save the form data (book details) to the database
         return super().form_valid(form)
+    
+    
+#Rest framework API's
+class BookListCreate(APIView):
+    def get(self, request):
+        books = Book.objects.all()
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+        
