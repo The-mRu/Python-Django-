@@ -1,5 +1,6 @@
 from typing import Any
 from django import forms
+from book.models import Book 
 
 class ContactForm(forms.Form):
     name = forms.CharField(max_length= 200)
@@ -11,3 +12,15 @@ class ContactForm(forms.Form):
         if not email.endswith('@example.com'):
             raise forms.ValidationError('Email is not from "@example.com" domain.')
         return email
+
+# Task 3: Create ModelForm for Book model
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'description', 'publication_date', 'author', 'price', 'publisher']
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price <= 0:
+            raise forms.ValidationError('Price must be positive.')
+        return price    
