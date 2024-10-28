@@ -1,4 +1,4 @@
-# Day 9: [Django Authentication](https://docs.djangoproject.com/en/5.1/topics/auth/) ( Authorization,   Authentication, Login & Registration )
+# Day 10: [Django Authentication](https://docs.djangoproject.com/en/5.1/topics/auth/) ( Authorization,   Authentication, Login & Registration )
 
 **users** app created, then add login.html and registration.html in the templates folder
 
