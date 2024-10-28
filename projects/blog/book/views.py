@@ -23,6 +23,13 @@ class BookListView(ListView):
     model = Book
     template_name = 'book_list.html'
     context_object_name = 'books'
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            context = {'x':1}
+            return render(request,'login.html',context)  # Redirect to login if not authenticated
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class MyView(View):
