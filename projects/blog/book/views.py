@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, FormView   
@@ -11,8 +11,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from book.serializers import BookSerializer, AuthorSerializer
 from rest_framework import status
-
-
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 def home(request):
     return HttpResponse("Welcome to the Book page! (home function)")
 
@@ -65,7 +65,8 @@ class BookListCreate(APIView):
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request ):
+        # instance = get_object_or_404(Book,pk=pk)
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -85,3 +86,30 @@ class AuthorListCreate(APIView):
             serializer.save()  # Save the new Author instance
             return Response(serializer.data, status=status.HTTP_201_CREATED)  # Return success response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Return error response if invalid
+    
+class BookGetUpdateDelete(RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,GenericAPIView):
+    queryset= Book.objects.all()
+    serializer_class= BookSerializer
+    http_method_names =('get', 'put', 'delete')
+    
+    def get(self, request,*args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        # Create a new book
+        return self.create(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        # Update all fields of an existing book
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        # Partially update a book (only the fields provided in the request)
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        # Delete an existing book
+        return self.destroy(request, *args, **kwargs)
+    
+    
+    
