@@ -3,13 +3,15 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, FormView   
 
-from book.models import Book
+from book.models import Book,Author
 from book.forms import ContactForm, BookForm
 
 #from rest framework
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from book.serializers import BookSerializer
+from book.serializers import BookSerializer, AuthorSerializer
+from rest_framework import status
+
 
 def home(request):
     return HttpResponse("Welcome to the Book page! (home function)")
@@ -70,3 +72,16 @@ class BookListCreate(APIView):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
         
+
+class AuthorListCreate(APIView):
+    def get(self, request):
+        authors = Author.objects.all()  # Retrieve all authors
+        serializer = AuthorSerializer(authors, many=True)  # Serialize multiple authors
+        return Response(serializer.data)  # Return serialized data
+
+    def post(self, request):
+        serializer = AuthorSerializer(data=request.data)  # Deserialize JSON to Author object
+        if serializer.is_valid():  # Validate the data
+            serializer.save()  # Save the new Author instance
+            return Response(serializer.data, status=status.HTTP_201_CREATED)  # Return success response
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Return error response if invalid
