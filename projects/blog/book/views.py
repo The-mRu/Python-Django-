@@ -10,7 +10,7 @@ from book.forms import ContactForm, BookForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from book.serializers import BookSerializer, AuthorSerializer
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 def home(request):
@@ -60,18 +60,21 @@ class BookCreateView(FormView):
     
 #Rest framework API's
 class BookListCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
-        books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
-        return Response(serializer.data)
+        books = Book.objects.all()  # Fetch all books from the database, here Book is model name
+        print(request.user) #print current user
+        serializer = BookSerializer(books, many=True) # Serialize the queryset to JSON
+        return Response(serializer.data)  # Return serialized data as JSON response 
 
     def post(self, request ):
         # instance = get_object_or_404(Book,pk=pk)
-        serializer = BookSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        serializer = BookSerializer(data=request.data) # Deserialize JSON data from the request
+        if serializer.is_valid(): # Validate data before saving
+            serializer.save() # Save the new book instance
+            return Response(serializer.data, status=201)  # Return created data with 201 status
+        return Response(serializer.errors, status=400) # If validation fails, return errors with 400 status
         
 
 class AuthorListCreate(APIView):
